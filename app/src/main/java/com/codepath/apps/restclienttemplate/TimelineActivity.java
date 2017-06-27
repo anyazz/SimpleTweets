@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetAdapter;
@@ -16,6 +18,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -77,10 +80,25 @@ public class TimelineActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    private final int REQUEST_CODE = 20;
 
     private void composeMessage() {
-
+        Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+        startActivityForResult(i, REQUEST_CODE); // brings up the second activity
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            // Extract name value from result extras
+            Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
+            // Toast the name to display temporarily on screen
+            Toast.makeText(this, "Tweet posted by " + tweet.user.name, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     private void populateTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
@@ -99,7 +117,7 @@ public class TimelineActivity extends AppCompatActivity {
                     // convert each object to a Tweet model
                     // add that Tweet model to our data source
                     // notify the adapter that we've added an item
-                    Tweet tweet = null;
+                    Tweet tweet;
                     try {
                         tweet = Tweet.fromJSON(response.getJSONObject(i));
                         tweets.add(tweet);
