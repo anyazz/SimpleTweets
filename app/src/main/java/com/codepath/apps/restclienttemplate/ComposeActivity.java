@@ -3,23 +3,29 @@ package com.codepath.apps.restclienttemplate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
 
 public class ComposeActivity extends AppCompatActivity {
     private TwitterClient client;
+    public static final int MAX_TWEET_LENGTH = 140;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,43 @@ public class ComposeActivity extends AppCompatActivity {
 
         client = TwitterApp.getRestClient();
 
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setIcon(R.drawable.ic_twitter_bird);
+        getSupportActionBar().setTitle("");
+
+
+        // Tweet body character counter: adapted from
+        // https://stackoverflow.com/questions/3013791/live-character-count-for-edittext
+
+        final TextView tvCharCount = (TextView) findViewById(R.id.tvCharCount);
+        EditText etTweetBody = (EditText) findViewById(R.id.etTweetBody);
+
+        final TextWatcher charCounter = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                tvCharCount.setText(String.valueOf(MAX_TWEET_LENGTH - s.length()));
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        };
+        etTweetBody.addTextChangedListener(charCounter);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_compose, menu);
+        return true;
     }
 
     public void onSubmit(View v) {
@@ -48,7 +91,9 @@ public class ComposeActivity extends AppCompatActivity {
                 // Prepare data intent
                 Intent data = new Intent();
                 // Pass relevant data back as a result
-                data.putExtra("tweet", Parcels.wrap(tweet));
+                User user = tweet.user;
+                data.putExtra("user", user);
+                data.putExtra("tweet", tweet);
 //                data.putExtra("createdAt", tweet.createdAt);
                 //
                 // Activity finished ok, return the data

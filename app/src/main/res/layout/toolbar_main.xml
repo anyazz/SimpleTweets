@@ -4,8 +4,10 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/holo_blue_light"
+    android:background="#1DA1F2"
     android:minHeight="?attr/actionBarSize"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:theme="@style/ToolbarTheme"
+    android:title=""
+    android:icon="@drawable/ic_twitter_bird"
     app:titleTextAppearance="@style/Toolbar.TitleText" />
