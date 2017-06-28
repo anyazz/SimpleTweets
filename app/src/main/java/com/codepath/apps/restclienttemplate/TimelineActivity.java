@@ -1,9 +1,11 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -83,6 +85,10 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+        // add delimiters between tweets
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvTweets.getContext(), Configuration.ORIENTATION_PORTRAIT);
+        rvTweets.addItemDecoration(dividerItemDecoration);
     }
 
 
@@ -107,25 +113,27 @@ public class TimelineActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    private final int REQUEST_CODE = 20;
+    private final int REQUEST_CODE_1 = 10;
 
     private void composeMessage() {
         Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-        startActivityForResult(i, REQUEST_CODE); // brings up the second activity
+        startActivityForResult(i, REQUEST_CODE_1); // brings up the second activity
     }
+    private final int REQUEST_CODE_2 = 20;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_1) {
             // Extract name value from result extras
             Tweet tweet = data.getParcelableExtra("tweet");
-            tweet.user = data.getParcelableExtra("user");
-            // Toast the name to display temporarily on screen
-//            Toast.makeText(this, "Tweet posted by " + tweet.user.name, Toast.LENGTH_SHORT).show();
+
             tweets.add(0, tweet);
             tweetAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);
+        }
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_2) {
+
         }
 
     }

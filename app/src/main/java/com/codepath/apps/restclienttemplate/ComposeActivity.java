@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -26,9 +25,14 @@ import cz.msebera.android.httpclient.Header;
 public class ComposeActivity extends AppCompatActivity {
     private TwitterClient client;
     public static final int MAX_TWEET_LENGTH = 140;
+    private long reply_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // initialize reply_id constant
+        reply_id = -1;
+
+        Log.d("composeactivity", "begun");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
@@ -43,12 +47,25 @@ public class ComposeActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.ic_twitter_bird);
         getSupportActionBar().setTitle("");
 
+        final TextView tvCharCount = (TextView) findViewById(R.id.tvCharCount);
+        EditText etTweetBody = (EditText) findViewById(R.id.etTweetBody);
+
+        Tweet replyTweet;
+        replyTweet = getIntent().getParcelableExtra("replyTweet");
+        if (replyTweet != null) {
+            Log.d("composeactivity", "reply");
+            etTweetBody.setText("@" + replyTweet.user.screenName);
+            reply_id = replyTweet.uid;
+        }
+        else {
+            Log.d("composeactivity", "reply null");
+
+        }
+
 
         // Tweet body character counter: adapted from
         // https://stackoverflow.com/questions/3013791/live-character-count-for-edittext
 
-        final TextView tvCharCount = (TextView) findViewById(R.id.tvCharCount);
-        EditText etTweetBody = (EditText) findViewById(R.id.etTweetBody);
 
         final TextWatcher charCounter = new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -64,6 +81,8 @@ public class ComposeActivity extends AppCompatActivity {
         };
         etTweetBody.addTextChangedListener(charCounter);
 
+
+
     }
 
     @Override
@@ -77,10 +96,10 @@ public class ComposeActivity extends AppCompatActivity {
         EditText etTweet = (EditText) findViewById(R.id.etTweetBody);
         String tweetText = etTweet.getText().toString();
         Log.d("onSubmit", tweetText);
-        client.sendTweet(tweetText, new JsonHttpResponseHandler() {
+        client.sendTweet(tweetText, reply_id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("Success", "tweet");
+                Log.d("Success", String.valueOf(reply_id));
                 Tweet tweet = null;
                 try {
                     tweet = Tweet.fromJSON(response);
@@ -91,8 +110,8 @@ public class ComposeActivity extends AppCompatActivity {
                 // Prepare data intent
                 Intent data = new Intent();
                 // Pass relevant data back as a result
-                User user = tweet.user;
-                data.putExtra("user", user);
+//                User user = tweet.user;
+//                data.putExtra("user", user);
                 data.putExtra("tweet", tweet);
 //                data.putExtra("createdAt", tweet.createdAt);
                 //

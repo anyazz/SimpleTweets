@@ -63,11 +63,8 @@ public class Tweet implements Parcelable {
         dest.writeString(body);
         dest.writeLong(uid);
         dest.writeString(createdAt);
-    }
+        dest.writeParcelable(user, flags);
 
-//    @Override
-//    public Tweet[] newArray(int size) {
-//        return new Tweet[size];
-//    }
+    }
 
 }

@@ -1,8 +1,10 @@
 package com.codepath.apps.restclienttemplate.models;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.restclienttemplate.ComposeActivity;
 import com.codepath.apps.restclienttemplate.R;
 
 import java.text.ParseException;
@@ -48,9 +51,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     // bind values based on the position of the element
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // get the data according to position
-        Tweet tweet = mTweets.get(position);
+        final Tweet tweet = mTweets.get(position);
 
         // populate the views according to this data
         holder.tvUsername.setText(tweet.user.name);
@@ -63,6 +66,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .load(tweet.user.profileImageUrl)
                 .bitmapTransform(new RoundedCornersTransformation(context, 5, 0))
                 .into(holder.ivProfileImage);
+
+        holder.ivReply.setOnClickListener(new View.OnClickListener() {
+           public void onClick(View v) {
+               Log.d("clicked", "reply");
+               Intent i = new Intent(context, ComposeActivity.class);
+               i.putExtra("replyTweet", tweet);
+//               holder.ivReply.setColorFilter(ContextCompat.getColor(context, Color.rgb(29,161,242)));
+               context.startActivity(i); // brings up the second activity
+               }
+       });
     }
 
     @Override
@@ -72,12 +85,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     // create ViewHolder class
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvScreenName;
         public TextView tvTimestamp;
+        public ImageView ivReply;
 
         public ViewHolder (View itemView) {
             super(itemView);
@@ -89,7 +103,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
             tvTimestamp = (TextView) itemView.findViewById(R.id.tvTimestamp);
+            ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
         }
+
     }
 
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
@@ -109,6 +125,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
         return relativeDate;
     }
+
+
 
     // Clean all elements of the recycler
     public void clear() {

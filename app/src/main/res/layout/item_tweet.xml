@@ -7,6 +7,19 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/ivReply"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/content"
+        android:layout_marginLeft="60dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ic_reply" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/content">
+    <ImageView
         android:id="@+id/ivProfileImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -34,20 +47,24 @@
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="" />
 
-    <TextView
-        android:id="@+id/tvScreenName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
+
+        <TextView
+            android:id="@+id/tvScreenName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
         android:layout_toEndOf="@+id/tvUsername"
         android:text="" />
 
-    <TextView
-        android:id="@+id/tvTimestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvScreenName"
-        android:layout_alignParentEnd="true"
-        android:text="" />
+        <TextView
+            android:id="@+id/tvTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvScreenName"
+            android:layout_alignParentEnd="true"
+            android:text="" />
+    </RelativeLayout>
+
+
 </RelativeLayout>
