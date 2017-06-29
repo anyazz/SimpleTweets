@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.ComposeActivity;
 import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TweetDetailActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,16 +68,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .load(tweet.user.profileImageUrl)
                 .bitmapTransform(new RoundedCornersTransformation(context, 5, 0))
                 .into(holder.ivProfileImage);
-
-        holder.ivReply.setOnClickListener(new View.OnClickListener() {
-           public void onClick(View v) {
-               Log.d("clicked", "reply");
-               Intent i = new Intent(context, ComposeActivity.class);
-               i.putExtra("replyTweet", tweet);
-//               holder.ivReply.setColorFilter(ContextCompat.getColor(context, Color.rgb(29,161,242)));
-               context.startActivity(i); // brings up the second activity
-               }
-       });
     }
 
     @Override
@@ -85,13 +77,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     // create ViewHolder class
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvScreenName;
         public TextView tvTimestamp;
         public ImageView ivReply;
+        public RelativeLayout itemTweet;
 
         public ViewHolder (View itemView) {
             super(itemView);
@@ -104,6 +97,36 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
             tvTimestamp = (TextView) itemView.findViewById(R.id.tvTimestamp);
             ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
+            itemTweet = (RelativeLayout) itemView.findViewById(R.id.itemTweet);
+
+            // set on click listeners
+            itemTweet.setOnClickListener(this);
+            ivReply.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Tweet tweet = mTweets.get(position);
+            Log.d("clicked", String.valueOf(v.getId()));
+            switch (v.getId()) {
+                case (R.id.ivReply):
+                    Log.d("clicked", "reply");
+                    Intent i = new Intent(context, ComposeActivity.class);
+                    i.putExtra("replyTweet", tweet);
+                    //               holder.ivReply.setColorFilter(ContextCompat.getColor(context, Color.rgb(29,161,242)));
+                    context.startActivity(i); // brings up the second activity
+                    break;
+
+               default:
+                   Log.d("clicked", "tweet");
+                   i = new Intent(context, TweetDetailActivity.class);
+                   i.putExtra("tweet", tweet);
+                   context.startActivity(i); // brings up the second activity
+                   break;
+            }
         }
 
     }

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepath.apps.restclienttemplate.TweetDetailActivity">
+
+    <include
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@id/toolbar"/>
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="17dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:text="TextView"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/tvUsername"
+        android:layout_marginStart="14dp"
+        app:srcCompat="@drawable/ic_profile" />
+
+    <TextView
+        android:id="@+id/tvScreenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tvUsername"
+        android:layout_below="@+id/tvUsername"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvTweetBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/ivProfileImage"
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvTimeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tvTweetBody"
+        android:layout_below="@+id/tvTweetBody"
+        android:text="TextView"
+        android:layout_marginTop="10dp"
+        android:textSize="13sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTimeStamp"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+
+    <ImageView
+        android:layout_marginTop="2dp"
+        android:id="@+id/ivReply"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        app:srcCompat="@drawable/ic_reply" />
+
+    <ImageView
+        android:id="@+id/ivRetweet"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_retweet"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_marginRight="0dp"
+            android:id="@+id/ivFavorite"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:srcCompat="@drawable/ic_favorite"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+</RelativeLayout>

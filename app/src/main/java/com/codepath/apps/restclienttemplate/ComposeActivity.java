@@ -32,7 +32,6 @@ public class ComposeActivity extends AppCompatActivity {
         // initialize reply_id constant
         reply_id = -1;
 
-        Log.d("composeactivity", "begun");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
@@ -53,12 +52,10 @@ public class ComposeActivity extends AppCompatActivity {
         Tweet replyTweet;
         replyTweet = getIntent().getParcelableExtra("replyTweet");
         if (replyTweet != null) {
-            Log.d("composeactivity", "reply");
             etTweetBody.setText("@" + replyTweet.user.screenName);
             reply_id = replyTweet.uid;
         }
         else {
-            Log.d("composeactivity", "reply null");
 
         }
 
