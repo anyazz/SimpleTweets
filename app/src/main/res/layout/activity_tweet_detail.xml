@@ -10,11 +10,11 @@
     android:layout_height="match_parent"
     tools:context="com.codepath.apps.restclienttemplate.TweetDetailActivity">
 
-    <include
-        layout="@layout/toolbar_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@id/toolbar"/>
+    <!--<include-->
+        <!--layout="@layout/toolbar_main"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@id/toolbar"/>-->
 
     <RelativeLayout
         android:id="@+id/retweetBar"

@@ -5,21 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.codepath.apps.restclienttemplate.ComposeActivity">
-    <include
-        layout="@layout/toolbar_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar" />
-    <Button
-        android:id="@+id/btnTweet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="onSubmit"
-        android:text="Tweet"
-        android:layout_below="@+id/etTweetBody"
-        android:layout_alignParentEnd="true"
-        android:background="#1DA1F2"/>
+    <!--<include-->
+        <!--layout="@layout/toolbar_main"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/toolbar" />-->
+    <!--<Button-->
+        <!--android:id="@+id/btnTweet"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:onClick="onSubmit"-->
+        <!--android:text="Tweet"-->
+        <!--android:layout_below="@+id/etTweetBody"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:background="#1DA1F2"/>-->
 
     <EditText
         android:id="@+id/etTweetBody"
@@ -36,11 +36,8 @@
         android:id="@+id/tvCharCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnTweet"
-        android:layout_alignBottom="@+id/btnTweet"
-        android:layout_marginEnd="28dp"
+        android:layout_below="@+id/etTweetBody"
         android:layout_marginLeft="10dp"
-        android:layout_toStartOf="@+id/btnTweet"
         android:text="140" />
 
 </RelativeLayout>

@@ -1,8 +1,9 @@
 package com.codepath.apps.restclienttemplate;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,9 +11,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetAdapter;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -104,6 +110,7 @@ public class TimelineActivity extends AppCompatActivity {
         // add delimiters between tweets
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvTweets.getContext(), Configuration.ORIENTATION_PORTRAIT);
         rvTweets.addItemDecoration(dividerItemDecoration);
+
     }
 
     // Append the next page of data into the adapter
@@ -192,28 +199,66 @@ public class TimelineActivity extends AppCompatActivity {
     private final int REQUEST_CODE_1 = 10;
 
     private void composeMessage() {
-        Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-        startActivityForResult(i, REQUEST_CODE_1); // brings up the second activity
+        final Context context = this;
+        boolean wrapInScrollView = false;
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
+        final View activity_compose = inflater.inflate(R.layout.activity_compose, null);
+        final long reply_id = -1;
+
+        new MaterialDialog.Builder(context)
+                .title("Compose Tweet")
+                .customView(activity_compose, wrapInScrollView)
+                .positiveText("TWEET")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        EditText etTweet = (EditText) activity_compose.findViewById(R.id.etTweetBody);
+                        String tweetText = etTweet.getText().toString();
+                        Log.d("onSubmit", tweetText);
+                        Log.d("onSubmit", "#" + String.valueOf(reply_id));
+                        client.sendTweet(tweetText, reply_id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                Log.d("Success", String.valueOf(reply_id));
+                                Tweet tweet = null;
+                                try {
+                                    tweet = Tweet.fromJSON(response);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                tweets.add(0, tweet);
+                                tweetAdapter.notifyItemInserted(0);
+                                rvTweets.scrollToPosition(0);                            }
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                                Log.d("TwitterClient", response.toString());
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                Log.d("TwitterClient", responseString);
+                                throwable.printStackTrace();
+
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                Log.d("TwitterClient", errorResponse.toString());
+                                throwable.printStackTrace();
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                                Log.d("TwitterClient", errorResponse.toString());
+                                throwable.printStackTrace();
+                            }
+                        });
+                    }
+                })
+                .show();
     }
-    private final int REQUEST_CODE_2 = 20;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_1) {
-            // Extract name value from result extras
-            Tweet tweet = data.getParcelableExtra("tweet");
-
-            tweets.add(0, tweet);
-            tweetAdapter.notifyItemInserted(0);
-            rvTweets.scrollToPosition(0);
-        }
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_2) {
-
-        }
-
-    }
-
 
 
     private void populateTimeline() {
