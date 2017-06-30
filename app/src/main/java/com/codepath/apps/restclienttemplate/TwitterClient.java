@@ -52,6 +52,15 @@ public class TwitterClient extends OAuthBaseClient {
 		client.get(apiUrl, params, handler);
 	}
 
+	public void extendTimeline(long last_tweet_id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		params.put("max_id", last_tweet_id);
+		client.get(apiUrl, params, handler);
+	}
+
 	// using data from ComposeActivity, send tweet
 	public void sendTweet(String message, long reply_id, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/update.json");
