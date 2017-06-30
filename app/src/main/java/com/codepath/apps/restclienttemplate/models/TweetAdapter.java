@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
  */
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
-
+    public final static int IMAGE_HEIGHT = 150;
     private List<Tweet> mTweets;
     Context context;
     // pass in Tweets array in the constructor
@@ -50,8 +51,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         return viewHolder;
     }
 
-    // bind values based on the position of the element
+    // convert dp to px - needed for image display
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
 
+    // bind values based on the position of the element
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         // get the data according to position
@@ -68,6 +74,18 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .load(tweet.user.profileImageUrl)
                 .bitmapTransform(new RoundedCornersTransformation(context, 5, 0))
                 .into(holder.ivProfileImage);
+        if (tweet.firstImageUrl == "") {
+            holder.ivFirstImage.setVisibility(View.GONE);
+        }
+        else {
+            holder.ivFirstImage.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(tweet.firstImageUrl)
+                    .placeholder(R.drawable.default_placeholder)
+                    .dontAnimate()
+                    .bitmapTransform(new RoundedCornersTransformation(context, 15, 0))
+                    .into(holder.ivFirstImage);
+        }
     }
 
     @Override
@@ -85,6 +103,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public TextView tvTimestamp;
         public ImageView ivReply;
         public RelativeLayout itemTweet;
+        public ImageView ivFirstImage;
 
         public ViewHolder (View itemView) {
             super(itemView);
@@ -98,6 +117,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvTimestamp = (TextView) itemView.findViewById(R.id.tvTimestamp);
             ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
             itemTweet = (RelativeLayout) itemView.findViewById(R.id.itemTweet);
+            ivFirstImage = (ImageView) itemView.findViewById(R.id.ivFirstImage);
 
             // set on click listeners
             itemTweet.setOnClickListener(this);
@@ -112,7 +132,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             Tweet tweet = mTweets.get(position);
             Log.d("clicked", String.valueOf(v.getId()));
             switch (v.getId()) {
-                case (R.id.ivReply):
+                case R.id.ivReply:
                     Log.d("clicked", "reply");
                     Intent i = new Intent(context, ComposeActivity.class);
                     i.putExtra("replyTweet", tweet);

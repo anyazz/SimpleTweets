@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+<RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,15 +16,40 @@
         android:layout_height="wrap_content"
         android:id="@id/toolbar"/>
 
+    <RelativeLayout
+        android:id="@+id/retweetBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/toolbar"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/body"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+
+        >
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="17dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="TextView"
+        android:layout_marginLeft="8dp"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -30,7 +59,7 @@
         android:layout_height="60dp"
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/tvUsername"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="0dp"
         app:srcCompat="@drawable/ic_profile" />
 
     <TextView
@@ -57,18 +86,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tvTweetBody"
-        android:layout_below="@+id/tvTweetBody"
+        android:layout_below="@+id/ivFirstImage"
         android:text="TextView"
         android:layout_marginTop="10dp"
         android:textSize="13sp" />
 
+        <ImageView
+            android:id="@+id/ivFirstImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTweetBody"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="false"
+            app:srcCompat="@drawable/default_placeholder" />
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTimeStamp"
-        android:layout_marginTop="18dp"
+        android:layout_below="@+id/body"
+        android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginRight="16dp"
+        android:id="@+id/actionButtons">
 
 
     <ImageView
@@ -97,4 +137,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
+
 </RelativeLayout>
+</ScrollView>

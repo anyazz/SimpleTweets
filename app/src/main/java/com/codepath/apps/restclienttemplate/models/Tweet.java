@@ -15,14 +15,18 @@ public class Tweet implements Parcelable {
     // list out attributes
     public String body;
     public long uid;  // database ID for tweet
-    public User user;
     public String createdAt;
+    public String firstImageUrl;
+    public User user;
+
 
     private Tweet(android.os.Parcel in) {
         body = in.readString();
         uid = in.readLong();
         createdAt = in.readString();
+        firstImageUrl = in.readString();
         user = in.readParcelable(User.class.getClassLoader());
+
     }
 
     public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {
@@ -49,6 +53,14 @@ public class Tweet implements Parcelable {
         tweet.body = jsonObject.getString("text");
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        if (entities.has("media")) {
+            tweet.firstImageUrl = entities.getJSONArray("media").getJSONObject(0).getString("media_url");
+        }
+        else {
+            tweet.firstImageUrl = "";
+        }
+
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         return tweet;
     }
@@ -63,8 +75,8 @@ public class Tweet implements Parcelable {
         dest.writeString(body);
         dest.writeLong(uid);
         dest.writeString(createdAt);
+        dest.writeString(firstImageUrl);
         dest.writeParcelable(user, flags);
-
     }
 
 }
