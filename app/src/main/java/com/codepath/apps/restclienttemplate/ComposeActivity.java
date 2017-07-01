@@ -43,8 +43,8 @@ public class ComposeActivity extends AppCompatActivity {
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
-        getSupportActionBar().setIcon(R.drawable.ic_twitter_bird);
-        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setIcon(R.drawable.ic_twitter_bird);
+//        getSupportActionBar().setTitle("");
 
         final TextView tvCharCount = (TextView) findViewById(R.id.tvCharCount);
         EditText etTweetBody = (EditText) findViewById(R.id.etTweetBody);

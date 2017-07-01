@@ -187,7 +187,9 @@ public class TimelineActivity extends AppCompatActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.miCompose:
-                composeMessage();
+                tweetAdapter.openComposeModal(-1, "", this);
+
+//                composeMessage();
                 return true;
 //            case R.id.miProfile:
 ////                showProfileView();
@@ -196,7 +198,12 @@ public class TimelineActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    private final int REQUEST_CODE_1 = 10;
+
+    public void updateTimeline(Tweet tweet) {
+        tweets.add(0, tweet);
+        tweetAdapter.notifyItemInserted(0);
+        rvTweets.scrollToPosition(0);
+    }
 
     private void composeMessage() {
         final Context context = this;

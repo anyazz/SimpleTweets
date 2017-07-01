@@ -10,11 +10,11 @@
     android:layout_height="match_parent"
     tools:context="com.codepath.apps.restclienttemplate.TweetDetailActivity">
 
-    <!--<include-->
-        <!--layout="@layout/toolbar_main"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@id/toolbar"/>-->
+    <include
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@id/toolbar"/>
 
     <RelativeLayout
         android:id="@+id/retweetBar"
@@ -100,6 +100,7 @@
             android:adjustViewBounds="true"
             android:cropToPadding="false"
             app:srcCompat="@drawable/default_placeholder" />
+
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -136,7 +137,35 @@
             app:srcCompat="@drawable/ic_favorite"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
+
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionButtons"
+        android:id="@+id/relativeLayout2"
+        android:layout_marginLeft="12px"
+        android:layout_marginRight="12px">
+
+        <EditText
+            android:id="@+id/etReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+            android:hint="Tweet your reply"
+            android:inputType="textPersonName" />
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reply"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/etReply" />
+    </RelativeLayout>
+
+
 
 </RelativeLayout>
 </ScrollView>
