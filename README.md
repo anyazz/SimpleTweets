@@ -27,7 +27,7 @@ The following **optional** features are implemented:
 * [x] User can **select "reply" from detail view to respond to a tweet**
   * [x] User that wrote the original tweet is **automatically "@" replied in compose**
 * [x] User can tap a tweet to **open a detailed tweet view**
-  * [ ] User can **take favorite (and unfavorite) or reweet** actions on a tweet
+  * [x] User can **take favorite (and unfavorite) or reweet** actions on a tweet
 * [x] User can **see embedded image media within a tweet** on list or detail view.
 
 The following **bonus** features are implemented:
