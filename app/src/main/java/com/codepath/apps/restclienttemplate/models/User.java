@@ -17,12 +17,18 @@ public class User implements Parcelable {
     public long uid;
     public String screenName;
     public String profileImageUrl;
+    public String tagLine;
+    public int followersCount;
+    public int followingCount;
 
     protected User(Parcel in) {
         name = in.readString();
         uid = in.readLong();
         screenName = in.readString();
         profileImageUrl = in.readString();
+        tagLine = in.readString();
+        followersCount = in.readInt();
+        followingCount = in.readInt();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -51,6 +57,9 @@ public class User implements Parcelable {
         user.screenName = json.getString("screen_name");
         user.profileImageUrl = json.getString("profile_image_url");
 
+        user.tagLine = json.getString("description");
+        user.followersCount = json.getInt("followers_count");
+        user.followingCount = json.getInt("friends_count");
         return user;
     }
 
@@ -65,5 +74,8 @@ public class User implements Parcelable {
         dest.writeLong(uid);
         dest.writeString(screenName);
         dest.writeString(profileImageUrl);
+        dest.writeString(tagLine);
+        dest.writeInt(followersCount);
+        dest.writeInt(followingCount);
     }
 }

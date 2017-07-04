@@ -209,7 +209,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                                     try {
                                         Tweet tweet = Tweet.fromJSON(response);
                                         if (instance != null) {
-                                            instance.updateTimeline(tweet);
+//                                            instance.updateTimeline(tweet);
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
