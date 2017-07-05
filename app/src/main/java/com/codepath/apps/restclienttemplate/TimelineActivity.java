@@ -139,10 +139,8 @@ public class TimelineActivity extends AppCompatActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.miCompose:
-//                tweetAdapter.openComposeModal(-1, "", this);
                 ModalFragment modalFragment = ModalFragment.newInstance(-1, "");
-//                        getSupportFragmentManager().findFragmentById(R.id.modalFragment);
-//
+
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
                 // make change

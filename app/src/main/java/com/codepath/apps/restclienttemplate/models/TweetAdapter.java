@@ -25,6 +25,7 @@ import com.codepath.apps.restclienttemplate.TimelineActivity;
 import com.codepath.apps.restclienttemplate.TweetDetailActivity;
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.fragments.ModalFragment;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -155,7 +156,19 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
                 // if reply button clicked
                 case R.id.ivReply:
-                    openComposeModal(tweet.uid, "@" + tweet.user.screenName + " ", null);
+                    Log.d("clicked", "reply");
+                    ModalFragment modalFragment = ModalFragment.newInstance(tweet.uid, "@" + tweet.user.screenName + " ");
+                    modalFragment.openComposeModal(context);
+
+//                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//
+//                    // make change
+//                    ft.replace(R.id.flContainer, modalFragment);
+//
+//                    // commit
+//                    ft.commit();
+//
+//                    openComposeModal(tweet.uid, "@" + tweet.user.screenName + " ", null);
                     break;
 
                 case R.id.ivProfileImage:
