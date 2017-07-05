@@ -1,28 +1,20 @@
 package com.codepath.apps.restclienttemplate;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.codepath.apps.restclienttemplate.fragments.ModalFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsPagerAdapter;
 
 
 public class TimelineActivity extends AppCompatActivity {
-
-    // TwitterClient client;
 
     private EndlessRecyclerViewScrollListener scrollListener;
 
@@ -148,8 +140,17 @@ public class TimelineActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.miCompose:
 //                tweetAdapter.openComposeModal(-1, "", this);
+                ModalFragment modalFragment = ModalFragment.newInstance(-1, "");
+//                        getSupportFragmentManager().findFragmentById(R.id.modalFragment);
+//
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-                composeMessage();
+                // make change
+                ft.replace(R.id.flContainer, modalFragment);
+
+                // commit
+                ft.commit();
+
                 return true;
             case R.id.miProfile:
                 Intent i = new Intent(this, ProfileActivity.class);
@@ -166,68 +167,7 @@ public class TimelineActivity extends AppCompatActivity {
 //        rvTweets.scrollToPosition(0);
 //    }
 
-    private void composeMessage() {
-        final Context context = this;
-        boolean wrapInScrollView = false;
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
-        final View activity_compose = inflater.inflate(R.layout.activity_compose, null);
-        final long reply_id = -1;
 
-        new MaterialDialog.Builder(context)
-                .title("Compose Tweet")
-                .customView(activity_compose, wrapInScrollView)
-                .positiveText("TWEET")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        EditText etTweet = (EditText) activity_compose.findViewById(R.id.etTweetBody);
-                        String tweetText = etTweet.getText().toString();
-                        Log.d("onSubmit", tweetText);
-                        Log.d("onSubmit", "#" + String.valueOf(reply_id));
-//                        client.sendTweet(tweetText, reply_id, new JsonHttpResponseHandler() {
-//                            @Override
-//                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                                Log.d("Success", String.valueOf(reply_id));
-//                                Tweet tweet = null;
-//                                try {
-//                                    tweet = Tweet.fromJSON(response);
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-////
-////                                tweets.add(0, tweet);
-////                                tweetAdapter.notifyItemInserted(0);
-////                                rvTweets.scrollToPosition(0);
-//                            }
-//
-//                            @Override
-//                            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                                Log.d("TwitterClient", response.toString());
-//                            }
-//
-//                            @Override
-//                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                                Log.d("TwitterClient", responseString);
-//                                throwable.printStackTrace();
-//
-//                            }
-//
-//                            @Override
-//                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                                Log.d("TwitterClient", errorResponse.toString());
-//                                throwable.printStackTrace();
-//                            }
-//
-//                            @Override
-//                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                                Log.d("TwitterClient", errorResponse.toString());
-//                                throwable.printStackTrace();
-//                            }
-//                        });
-                    }
-                })
-                .show();
-    }
 
 
 }

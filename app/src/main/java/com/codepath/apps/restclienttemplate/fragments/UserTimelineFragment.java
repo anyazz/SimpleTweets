@@ -30,13 +30,9 @@ public class UserTimelineFragment extends TweetsListFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         client = TwitterApp.getRestClient();
         populateTimeline();
-
-
     }
 
 
@@ -54,7 +50,6 @@ public class UserTimelineFragment extends TweetsListFragment {
 
                 addItems(response);
 //                scrollListener.resetState();
-
 
             }
 

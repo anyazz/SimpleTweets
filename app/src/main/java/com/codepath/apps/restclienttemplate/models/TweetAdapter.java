@@ -156,10 +156,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 // if reply button clicked
                 case R.id.ivReply:
                     openComposeModal(tweet.uid, "@" + tweet.user.screenName + " ", null);
+                    break;
 
-                break;
+                case R.id.ivProfileImage:
 
-               default:
+                    break;
+
+                default:
                    Log.d("clicked", "tweet");
                    Intent i = new Intent(context, TweetDetailActivity.class);
                    i.putExtra("tweet", tweet);
