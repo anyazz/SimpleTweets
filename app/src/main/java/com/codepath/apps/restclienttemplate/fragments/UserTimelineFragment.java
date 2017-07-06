@@ -35,8 +35,8 @@ public class UserTimelineFragment extends TweetsListFragment {
         populateTimeline();
     }
 
-
-    private void populateTimeline() {
+    @Override
+    public void populateTimeline() {
         // comes from activity
         String screenName = getArguments().getString("screen_name");
         client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
@@ -49,7 +49,8 @@ public class UserTimelineFragment extends TweetsListFragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
                 addItems(response);
-//                scrollListener.resetState();
+                UserTimelineFragment.super.swipeContainer.setRefreshing(false);
+                UserTimelineFragment.super.scrollListener.resetState();
 
             }
 

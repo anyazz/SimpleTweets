@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         String screenName = getIntent().getStringExtra("screen_name");
+        String origin = getIntent().getStringExtra("origin");
 
         // create the user fragment
         UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(screenName);
@@ -50,24 +52,51 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         client = TwitterApp.getRestClient();
-        client.getUserInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // deserialize the User obj
-                User user = null;
-                try {
-                    user = User.fromJSON(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        if (origin == "menu") {
+            Log.d("origin", "menu");
+            client.getProfileInfo(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // deserialize the User obj
+                    User user = null;
+                    try {
+                        user = User.fromJSON(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    // set title of action bar based on user info
+                    getSupportActionBar().setTitle(user.screenName);
+
+                    // populate user headline
+                    populateUserHeadline(user);
                 }
+            });
+        }
+        else if (origin == "tweet") {
+            Log.d("origin", "tweet");
+            client.getUserInfo(screenName, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // deserialize the User obj
+                    User user = null;
+                    try {
+                        user = User.fromJSON(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                // set title of action bar based on user info
-                getSupportActionBar().setTitle(user.screenName);
+                    // set title of action bar based on user info
+                    getSupportActionBar().setTitle(user.screenName);
 
-                // populate user headline
-                populateUserHeadline(user);
-            }
-        });
+                    // populate user headline
+                    populateUserHeadline(user);
+                }
+            });
+        }
+        else {
+            Log.e("origin", "NOT FOUND");
+        }
     }
 
     @Override

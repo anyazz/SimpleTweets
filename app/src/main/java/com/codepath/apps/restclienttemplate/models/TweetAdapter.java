@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.codepath.apps.restclienttemplate.ProfileActivity;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TimelineActivity;
 import com.codepath.apps.restclienttemplate.TweetDetailActivity;
@@ -151,7 +152,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             int position = getAdapterPosition();
             Tweet tweet = mTweets.get(position);
             Log.d("clicked", String.valueOf(v.getId()));
-
+            Intent i;
             switch (v.getId()) {
 
                 // if reply button clicked
@@ -172,14 +173,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     break;
 
                 case R.id.ivProfileImage:
-
+                    i = new Intent(context, ProfileActivity.class);
+                    i.putExtra("screen_name", tweet.user.screenName);
+                    i.putExtra("origin", "tweet");
                     break;
 
                 default:
-                   Log.d("clicked", "tweet");
-                   Intent i = new Intent(context, TweetDetailActivity.class);
-                   i.putExtra("tweet", tweet);
-                   context.startActivity(i); // brings up the second activity
+                    Log.d("clicked", "tweet");
+                    i = new Intent(context, TweetDetailActivity.class);
+                    i.putExtra("tweet", tweet);
+                    context.startActivity(i); // brings up the second activity
                    // get views
 
 

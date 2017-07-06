@@ -2,7 +2,6 @@ package com.codepath.apps.restclienttemplate.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 
@@ -21,8 +20,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class HomeTimelineFragment extends TweetsListFragment {
     private TwitterClient client;
-
-    private SwipeRefreshLayout swipeContainer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +56,8 @@ public class HomeTimelineFragment extends TweetsListFragment {
 //                android.R.color.holo_red_light);
     }
 
-    private void populateTimeline() {
+    @Override
+    public void populateTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -70,8 +68,8 @@ public class HomeTimelineFragment extends TweetsListFragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
                 addItems(response);
-//                swipeContainer.setRefreshing(false);
-//                scrollListener.resetState();
+                HomeTimelineFragment.super.swipeContainer.setRefreshing(false);
+                HomeTimelineFragment.super.scrollListener.resetState();
 
 
             }

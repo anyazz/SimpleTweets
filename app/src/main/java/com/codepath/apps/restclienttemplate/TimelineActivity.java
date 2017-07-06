@@ -16,7 +16,6 @@ import com.codepath.apps.restclienttemplate.fragments.TweetsPagerAdapter;
 
 public class TimelineActivity extends AppCompatActivity {
 
-    private EndlessRecyclerViewScrollListener scrollListener;
 
 
 
@@ -47,84 +46,11 @@ public class TimelineActivity extends AppCompatActivity {
 
 
 
-//        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                // Triggered only when new data needs to be appended to the list
-//                // Add whatever code is needed to append new items to the bottom of the list
-//                loadNextDataFromApi(page);
-//            }
-
-//        };
-        // Adds the scroll listener to RecyclerView
-//        rvTweets.addOnScrollListener(scrollListener);
-
 
 
 
     }
 
-    // Append the next page of data into the adapter
-//    public void loadNextDataFromApi(int offset) {
-//        Log.d("loadnext", "api");
-////        long last_tweet_id = tweets.get(tweets.size() - 1).uid;
-//        client.extendTimeline(last_tweet_id, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                Log.d("TwitterClient", response.toString());
-//            }
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//
-//                fragmentTweetsList.addItems(response);
-////                // iterate through JSON array
-////                // for each entry, deserialize the JSON object
-////                for (int i = 0; i < response.length(); i++) {
-////                    // convert each object to a Tweet model
-////                    // add that Tweet model to our data source
-////                    // notify the adapter that we've added an item
-////                    Tweet tweet;
-////                    try {
-////                        tweet = Tweet.fromJSON(response.getJSONObject(i));
-////                        tweets.add(tweet);
-////                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
-////                    } catch (JSONException e) {
-////                        e.printStackTrace();
-////                    }
-////
-////                }
-////                swipeContainer.setRefreshing(false);
-//                scrollListener.resetState();
-//
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                Log.d("TwitterClient", responseString);
-//                throwable.printStackTrace();
-//
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                Log.d("TwitterClient", errorResponse.toString());
-//                throwable.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                Log.d("TwitterClient", errorResponse.toString());
-//                throwable.printStackTrace();
-//            }
-//        });
-//
-//        // Send an API request to retrieve appropriate paginated data
-//        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-//        //  --> Deserialize and construct new model objects from the API response
-//        //  --> Append the new data objects to the existing set of items inside the array of items
-//        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-//    }
 
 
     @Override
@@ -152,6 +78,7 @@ public class TimelineActivity extends AppCompatActivity {
                 return true;
             case R.id.miProfile:
                 Intent i = new Intent(this, ProfileActivity.class);
+                i.putExtra("origin", "menu");
                 startActivity(i);
                 return true;
             default:
