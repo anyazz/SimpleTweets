@@ -66,7 +66,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
+                tweetAdapter.clear();
                 addItems(response);
                 HomeTimelineFragment.super.swipeContainer.setRefreshing(false);
                 HomeTimelineFragment.super.scrollListener.resetState();

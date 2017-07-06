@@ -141,6 +141,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             // set on click listeners
             itemTweet.setOnClickListener(this);
             ivReply.setOnClickListener(this);
+            ivProfileImage.setOnClickListener(this);
 
 
         }
@@ -173,18 +174,19 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     break;
 
                 case R.id.ivProfileImage:
+                    Log.d("clicked", "profile");
                     i = new Intent(context, ProfileActivity.class);
                     i.putExtra("screen_name", tweet.user.screenName);
                     i.putExtra("origin", "tweet");
+                    context.startActivity(i);
+
                     break;
 
                 default:
                     Log.d("clicked", "tweet");
                     i = new Intent(context, TweetDetailActivity.class);
                     i.putExtra("tweet", tweet);
-                    context.startActivity(i); // brings up the second activity
-                   // get views
-
+                    context.startActivity(i);
 
             }
         }

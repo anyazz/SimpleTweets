@@ -47,7 +47,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
+                tweetAdapter.clear();
                 addItems(response);
                 UserTimelineFragment.super.swipeContainer.setRefreshing(false);
                 UserTimelineFragment.super.scrollListener.resetState();

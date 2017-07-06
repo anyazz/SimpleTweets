@@ -97,7 +97,16 @@ public class TweetsListFragment extends Fragment {
         // Adds the scroll listener to RecyclerView
         rvTweets.addOnScrollListener(scrollListener);
 
-
+//        TextView tvBody = (TextView) v.findViewById(R.id.tvBody);
+//        // Style clickable spans based on pattern
+//        new PatternEditableBuilder().
+//            addPattern(Pattern.compile("\\@(\\w+)"), Color.BLUE,
+//                new PatternEditableBuilder.SpannableClickedListener() {
+//                @Override
+//                public void onSpanClicked(String text) {
+//                    //
+//                }
+//            }).into(tvBody);
 
         return v;
     }
@@ -105,7 +114,6 @@ public class TweetsListFragment extends Fragment {
     public void addItems(JSONArray response) {
         // iterate through JSON array
         // for each entry, deserialize the JSON object
-        tweetAdapter.clear();
         Log.d("addItems", String.valueOf(response.length()));
         for (int i = 0; i < response.length(); i++) {
             // convert each object to a Tweet model
@@ -115,7 +123,6 @@ public class TweetsListFragment extends Fragment {
             try {
                 tweet = Tweet.fromJSON(response.getJSONObject(i));
                 tweets.add(tweet);
-                Log.d("addItems", tweet.user.screenName);
                 tweetAdapter.notifyItemInserted(tweets.size() - 1);
             } catch (JSONException e) {
                 e.printStackTrace();

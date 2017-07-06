@@ -30,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         String screenName = getIntent().getStringExtra("screen_name");
         String origin = getIntent().getStringExtra("origin");
+        Log.d("origin=", origin);
 
         // create the user fragment
         UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(screenName);
@@ -52,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         client = TwitterApp.getRestClient();
-        if (origin == "menu") {
+        if (origin.equals("menu")) {
             Log.d("origin", "menu");
             client.getProfileInfo(new JsonHttpResponseHandler() {
                 @Override
@@ -73,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
         }
-        else if (origin == "tweet") {
+        else if (origin.equals("tweet")) {
             Log.d("origin", "tweet");
             client.getUserInfo(screenName, new JsonHttpResponseHandler() {
                 @Override

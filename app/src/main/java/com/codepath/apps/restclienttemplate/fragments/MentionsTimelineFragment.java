@@ -68,7 +68,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
+                tweetAdapter.clear();
                 addItems(response);
                 MentionsTimelineFragment.super.swipeContainer.setRefreshing(false);
                 MentionsTimelineFragment.super.scrollListener.resetState();
