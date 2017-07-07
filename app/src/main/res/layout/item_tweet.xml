@@ -40,9 +40,9 @@
             android:layout_below="@+id/tvUsername"
             android:layout_marginLeft="10dp"
             android:layout_toEndOf="@+id/ivProfileImage"
-            android:text=""
-            android:autoLink="all"
-            />
+            android:text="" />
+            <!--android:autoLink="all"-->
+
 
 
         <TextView
@@ -82,7 +82,7 @@
         android:layout_below="@+id/content"
         android:layout_marginLeft="60dp"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_reply" />
+        app:srcCompat="@drawable/ic_vector_reply" />
 
 
 </RelativeLayout>

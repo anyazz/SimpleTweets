@@ -18,6 +18,10 @@ public class Tweet implements Parcelable {
     public String createdAt;
     public String firstImageUrl;
     public User user;
+    public boolean retweeted;
+    public boolean favorited;
+    public int favoriteCount;
+    public int retweetCount;
 
 
     private Tweet(android.os.Parcel in) {
@@ -26,6 +30,8 @@ public class Tweet implements Parcelable {
         createdAt = in.readString();
         firstImageUrl = in.readString();
         user = in.readParcelable(User.class.getClassLoader());
+        favorited = (Boolean) in.readValue(null);
+        retweeted = (Boolean) in.readValue(null);
 
     }
 
@@ -53,6 +59,11 @@ public class Tweet implements Parcelable {
         tweet.body = jsonObject.getString("text");
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
+        tweet.favorited = jsonObject.getBoolean("favorited");
+        tweet.retweeted = jsonObject.getBoolean("retweeted");
+        tweet.favoriteCount = jsonObject.getInt("favorite_count");
+        tweet.retweetCount = jsonObject.getInt("retweet_count");
+
         JSONObject entities = jsonObject.getJSONObject("entities");
         if (entities.has("media")) {
             tweet.firstImageUrl = entities.getJSONArray("media").getJSONObject(0).getString("media_url");
@@ -77,6 +88,10 @@ public class Tweet implements Parcelable {
         dest.writeString(createdAt);
         dest.writeString(firstImageUrl);
         dest.writeParcelable(user, flags);
+        dest.writeValue(retweeted);
+        dest.writeValue(favorited);
+        dest.writeInt(retweetCount);
+        dest.writeInt(favoriteCount);
     }
 
 }

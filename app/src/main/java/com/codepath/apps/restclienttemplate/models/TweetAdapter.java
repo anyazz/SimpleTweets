@@ -87,6 +87,21 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvScreenName.setText("@" + tweet.user.screenName);
         holder.tvTimestamp.setText(getRelativeTimeAgo(tweet.createdAt));
 
+        // check retweet and favorite status
+        if (tweet.favorited) {
+
+        }
+        else {
+
+        }
+
+        if (tweet.retweeted) {
+
+        }
+        else {
+
+        }
+
         // load profile image with Glide
         Glide.with(context)
                 .load(tweet.user.profileImageUrl)
@@ -185,7 +200,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 default:
                     Log.d("clicked", "tweet");
                     i = new Intent(context, TweetDetailActivity.class);
-                    i.putExtra("tweet", tweet);
+                    i.putExtra("tweet_id", tweet.uid);
                     context.startActivity(i);
 
             }

@@ -4,14 +4,14 @@
 
     <item
         android:id="@+id/miCompose"
-        android:icon="@drawable/ic_compose"
+        android:icon="@drawable/ic_vector_compose"
         app:showAsAction="ifRoom"
         android:title="Compose">
     </item>
-    <!--<item-->
-    <!--android:id="@+id/miProfile"-->
-    <!--android:icon="@drawable/ic_profile"-->
-    <!--app:showAsAction="ifRoom|withText"-->
-    <!--android:title="Profile">-->
-    <!--</item>-->
+    <item
+    android:id="@+id/miProfile"
+    android:icon="@drawable/ic_vector_profile"
+    app:showAsAction="ifRoom|withText"
+    android:title="Profile">
+    </item>
 </menu>

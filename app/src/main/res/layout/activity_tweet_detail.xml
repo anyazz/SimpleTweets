@@ -112,29 +112,32 @@
         android:id="@+id/actionButtons">
 
 
-    <ImageView
-        android:layout_marginTop="2dp"
-        android:id="@+id/ivReply"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        app:srcCompat="@drawable/ic_reply" />
+        <ImageView
+            android:id="@+id/ivReply"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="2dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="false"
+            app:srcCompat="@drawable/ic_vector_reply" />
 
-    <ImageView
-        android:id="@+id/ivRetweet"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:scaleType="fitXY"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_retweet"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        <ImageView
+            android:id="@+id/ivRetweet"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignTop="@+id/ivReply"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_vector_retweet" />
 
         <ImageView
             android:layout_marginRight="0dp"
             android:id="@+id/ivFavorite"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            app:srcCompat="@drawable/ic_favorite"
+            app:srcCompat="@drawable/ic_vector_heart"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
 
