@@ -88,14 +88,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvScreenName.setText("@" + tweet.user.screenName);
         holder.tvTimestamp.setText(getRelativeTimeAgo(tweet.createdAt));
 
-        // convert "_ minutes ago" to "_m", etc
-        String timestamp = (String) holder.tvTimestamp.getText();
-        String[] splitTime = timestamp.trim().split("\\s+");
-        List<String> times = Arrays.asList("years", "year", "months", "month");
-        if (!times.contains(splitTime[1])) {
-            timestamp = splitTime[0] + splitTime[1].charAt(0);
-        }
-        holder.tvTimestamp.setText(timestamp);
+        // shorten timestamps by converting "_ minutes ago" to "_m", etc
+        String shortTime = shortenRelativeTime((String) holder.tvTimestamp.getText());
+        holder.tvTimestamp.setText(shortTime);
 
 
         // check retweet and favorite status
@@ -130,6 +125,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     .bitmapTransform(new RoundedCornersTransformation(context, 15, 0))
                     .into(holder.ivFirstImage);
         }
+    }
+
+    public String shortenRelativeTime(String timestamp) {
+        String[] splitTime = timestamp.trim().split("\\s+");
+        List<String> times = Arrays.asList("years", "year", "months", "month");
+        if (!times.contains(splitTime[1])) {
+            timestamp = splitTime[0] + splitTime[1].charAt(0);
+        }
+        return timestamp;
     }
 
     @Override
