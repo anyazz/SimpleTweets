@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -31,6 +32,17 @@ public class HomeTimelineFragment extends TweetsListFragment {
 
 
     }
+
+    public static HomeTimelineFragment newInstance(Tweet tweet) {
+        HomeTimelineFragment fragmentTimeline = new HomeTimelineFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("tweet", tweet);
+        fragmentTimeline.setArguments(args);
+//        fragmentTimeline.tweets.add(tweet);
+//        fragmentTimeline.addItems(getTweets());
+        return fragmentTimeline;
+    }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

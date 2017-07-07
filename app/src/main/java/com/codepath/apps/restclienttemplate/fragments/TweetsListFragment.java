@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -131,6 +132,12 @@ public class TweetsListFragment extends Fragment {
         }
     }
 
+    public void addTweet(Tweet tweet) {
+        tweets.add(0, tweet);
+        tweetAdapter.notifyItemInserted(0);
+        rvTweets.scrollToPosition(0);
+    }
+
     public void populateTimeline() {
     }
 
@@ -176,4 +183,14 @@ public class TweetsListFragment extends Fragment {
 
     }
 
+    public TweetAdapter getTweetAdapter() {
+        return tweetAdapter;
+    }
+
+    public List<Tweet> getTweets() {
+        return tweets;
+    }
+    public RecyclerView getRvTweets() {
+        return rvTweets;
+    }
 }

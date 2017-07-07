@@ -33,6 +33,7 @@ public class ModalFragment extends Fragment {
 
     TwitterClient client;
     Context context;
+    private OnItemSelectedListener listener;
 
 
     @Override
@@ -52,6 +53,22 @@ public class ModalFragment extends Fragment {
         return fragmentModal;
     }
 
+    public interface OnItemSelectedListener {
+        // This can be any number of events to be sent to the activity
+        public void updateTimeline(Tweet tweet);
+    }
+
+    // Store the listener (activity) that will have events fired once the fragment is attached
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnItemSelectedListener) {
+            listener = (OnItemSelectedListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement ModalFragment.OnItemSelectedListener");
+        }
+    }
 
     public void openComposeModal(Context context) {
         client = TwitterApp.getRestClient();
@@ -96,9 +113,13 @@ public class ModalFragment extends Fragment {
                                 Log.d("Success", String.valueOf(reply_id));
                                 try {
                                     Tweet tweet = Tweet.fromJSON(response);
-//                                    if (instance != null) {
-////                                            instance.updateTimeline(tweet);
-//                                    }
+                                    if (listener != null) {
+                                        listener.updateTimeline(tweet);
+                                    }
+                                    else {
+                                        Log.d("listener", "couldn't update");
+                                    }
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -132,4 +153,7 @@ public class ModalFragment extends Fragment {
                 })
                 .show();
     }
+
+
+
 }

@@ -12,13 +12,11 @@ import android.view.MenuItem;
 
 import com.codepath.apps.restclienttemplate.fragments.ModalFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsPagerAdapter;
+import com.codepath.apps.restclienttemplate.models.Tweet;
 
 
-public class TimelineActivity extends AppCompatActivity {
-
-
-
-
+public class TimelineActivity extends AppCompatActivity implements ModalFragment.OnItemSelectedListener {
+    TweetsPagerAdapter tpAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +25,10 @@ public class TimelineActivity extends AppCompatActivity {
 
         // get view pager
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        tpAdapter = new TweetsPagerAdapter(getSupportFragmentManager(), this);
 
         // set the adapter for the pager
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+        vpPager.setAdapter(tpAdapter);
 
         // setup the TabLayout to use the view pager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -85,12 +84,11 @@ public class TimelineActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-//
-//    public void updateTimeline(Tweet tweet) {
-//        tweets.add(0, tweet);
-//        tweetAdapter.notifyItemInserted(0);
-//        rvTweets.scrollToPosition(0);
-//    }
+
+
+    public void updateTimeline(Tweet tweet) {
+        tpAdapter.timelineFragment.addTweet(tweet);
+    }
 
 
 
