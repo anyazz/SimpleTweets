@@ -169,6 +169,7 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.ivReply:
                 ModalFragment modalFragment = ModalFragment.newInstance(tweet.uid, "@" + tweet.user.screenName + " ");
+                modalFragment.onAttach(context);
                 modalFragment.openComposeModal(context);
                 break;
 

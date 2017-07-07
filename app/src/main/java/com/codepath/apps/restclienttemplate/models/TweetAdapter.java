@@ -2,36 +2,24 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.ProfileActivity;
 import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.TimelineActivity;
 import com.codepath.apps.restclienttemplate.TweetDetailActivity;
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.fragments.ModalFragment;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,7 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 
@@ -129,9 +116,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     public String shortenRelativeTime(String timestamp) {
         String[] splitTime = timestamp.trim().split("\\s+");
-        List<String> times = Arrays.asList("years", "year", "months", "month");
-        if (!times.contains(splitTime[1])) {
+        List<String> times = Arrays.asList("second", "seconds", "minute", "minutes", "hour", "hours", "day", "days", "week", "weeks");
+        // deal with recent tweets of form "# _ ago"
+        if (times.contains(splitTime[1])) {
             timestamp = splitTime[0] + splitTime[1].charAt(0);
+        }
+        // deal with old tweets of form M D, Y
+        else if (splitTime[2].equals(context.getString(R.string.current_year))) {
+            timestamp = splitTime[0] + " " + splitTime[1].substring(0, splitTime[1].length() -1);
         }
         return timestamp;
     }
@@ -190,6 +182,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 case R.id.ivReply:
                     Log.d("clicked", "reply");
                     ModalFragment modalFragment = ModalFragment.newInstance(tweet.uid, "@" + tweet.user.screenName + " ");
+                    modalFragment.onAttach(context);
                     modalFragment.openComposeModal(context);
 
 //                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -222,98 +215,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         }
 
     }
-
-    public void openComposeModal(final long reply_id, String tag, final TimelineActivity instance) {
-//            Tweet tweet;
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
-            final int MAX_TWEET_LENGTH = 140;
-
-            Log.d("clicked", "reply");
-
-            // inflate compose layout into view
-            final View activity_compose = inflater.inflate(R.layout.activity_compose, null);
-
-            // load data into view
-            EditText etTweetBody = (EditText) activity_compose.findViewById(R.id.etTweetBody);
-            etTweetBody.setText(tag);
-            etTweetBody.setSelection(tag.length());
-            final TextView tvCharCount = (TextView) activity_compose.findViewById(R.id.tvCharCount);
-            tvCharCount.setText(String.valueOf(MAX_TWEET_LENGTH - tag.length()));
-
-
-            // build modal
-            new MaterialDialog.Builder(context)
-                    .title("Compose Tweet")
-                    .customView(activity_compose, wrapInScrollView)
-                    .positiveText("TWEET")
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            EditText etTweet = (EditText) activity_compose.findViewById(R.id.etTweetBody);
-                            String tweetText = etTweet.getText().toString();
-                            Log.d("onSubmit", tweetText);
-                            Log.d("onSubmit", "#" + String.valueOf(reply_id));
-                            client.sendTweet(tweetText, reply_id, new JsonHttpResponseHandler() {
-                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                    Log.d("Success", String.valueOf(reply_id));
-                                    try {
-                                        Tweet tweet = Tweet.fromJSON(response);
-                                        if (instance != null) {
-//                                            instance.updateTimeline(tweet);
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                                    Log.d("TwitterClient", response.toString());
-                                }
-
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                    Log.d("TwitterClient", responseString);
-                                    throwable.printStackTrace();
-
-                                }
-
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                                    Log.d("TwitterClient", errorResponse.toString());
-                                    throwable.printStackTrace();
-                                }
-
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                                    Log.d("TwitterClient", errorResponse.toString());
-                                    throwable.printStackTrace();
-                                }
-                            });
-                        }
-                    })
-                    .show();
-
-//                    // set on click listeners
-//                    activity_compose.findViewById(R.id.ivReply).setOnClickListener(this);
-
-
-            // Tweet body character counter: adapted from
-            // https://stackoverflow.com/questions/3013791/live-character-count-for-edittext
-            final TextWatcher charCounter = new TextWatcher() {
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    //This sets a textview to the current length
-                    tvCharCount.setText(String.valueOf(MAX_TWEET_LENGTH - s.length()));
-                }
-                public void afterTextChanged(Editable s) {
-                }
-            };
-            etTweetBody.addTextChangedListener(charCounter);
-
-        }
 
 
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");

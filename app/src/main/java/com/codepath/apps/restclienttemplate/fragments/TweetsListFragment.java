@@ -47,6 +47,8 @@ public class TweetsListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        client = TwitterApp.getRestClient();
+
         // inflate layout
         View v = inflater.inflate(R.layout.fragments_tweets_list, container, false);
         // find the RecyclerView
@@ -143,10 +145,14 @@ public class TweetsListFragment extends Fragment {
 
     // Append the next page of data into the adapter
     public void loadNextDataFromApi(int offset) {
-        client = TwitterApp.getRestClient();
-        Log.d("loadnext", "api");
+
+    }
+
+
+
+    public void onExtendTimeline(String timelineType) {
         long last_tweet_id = tweets.get(tweets.size() - 1).uid;
-        client.extendTimeline(last_tweet_id, new JsonHttpResponseHandler() {
+        client.extendTimeline(timelineType, last_tweet_id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TwitterClient", response.toString());
@@ -182,7 +188,6 @@ public class TweetsListFragment extends Fragment {
         });
 
     }
-
     public TweetAdapter getTweetAdapter() {
         return tweetAdapter;
     }

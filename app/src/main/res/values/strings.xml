@@ -4,6 +4,7 @@
     <string name="app_name">Twitter</string>
     <string name="login_label">Log in to Twitter</string>
     <string name="intent_scheme">oauth</string>
+    <string name="current_year">2017</string>
     <string name="intent_host">cprest</string>
 
 </resources>

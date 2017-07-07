@@ -37,6 +37,8 @@ public class TweetsPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+
+
     private HomeTimelineFragment getTimelineInstance() {
         if (timelineFragment == null) {
             timelineFragment = new HomeTimelineFragment();

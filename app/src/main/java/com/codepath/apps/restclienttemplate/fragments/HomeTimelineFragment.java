@@ -107,5 +107,10 @@ public class HomeTimelineFragment extends TweetsListFragment {
         });
     }
 
+    @Override
+    // Append the next page of data into the adapter
+    public void loadNextDataFromApi(int offset) {
+        onExtendTimeline("home");
+    }
 
 }
