@@ -51,6 +51,8 @@ public class ProfileActivity extends AppCompatActivity {
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
+        getSupportActionBar().setIcon(R.drawable.ic_twitter_bird);
+
 
         client = TwitterApp.getRestClient();
         if (origin.equals("menu")) {
@@ -103,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_compose, menu);
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 

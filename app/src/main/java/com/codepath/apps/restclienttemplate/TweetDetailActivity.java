@@ -1,18 +1,19 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.restclienttemplate.fragments.ModalFragment;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -108,7 +109,7 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
                 }
             });
         } else {
-            Log.e("TweetDetailActivity", "null tweetId");
+            Log.e("TweetDetailActivity", "Unable to obtain tweet ID");
 
         }
     }
@@ -138,29 +139,24 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
                         .bitmapTransform(new RoundedCornersTransformation(context, 15, 0))
                         .into(ivFirstImage);
             }
-            Log.d("bool", String.valueOf(tweet.favorited));
-            Log.d("bool", String.valueOf(tweet.retweeted));
 
         } else {
-            Log.d("null", "tweet");
+            Log.e("TweetDetailActivity", "Unable to load tweet");
         }
 
 
         // UPDATE ICON COLORS
         if (tweet.favorited) {
-            ivFavorite.setColorFilter(Color.parseColor("#dd0f5a"), PorterDuff.Mode.SRC_IN);
+            ivFavorite.setColorFilter(ContextCompat.getColor(context, R.color.icon_pink), PorterDuff.Mode.SRC_IN);
         } else {
-            ivFavorite.setColorFilter(Color.parseColor("#555555"), PorterDuff.Mode.SRC_IN);
+            ivFavorite.setColorFilter(ContextCompat.getColor(context, R.color.icon_gray), PorterDuff.Mode.SRC_IN);
 
         }
 
-        Log.d("status", String.valueOf(tweet.retweeted));
         if (tweet.retweeted) {
-            Log.d("status", "retweeted");
-            ivRetweet.setColorFilter(Color.parseColor("#23af2c"), PorterDuff.Mode.SRC_IN);
+            ivRetweet.setColorFilter(ContextCompat.getColor(context, R.color.icon_green), PorterDuff.Mode.SRC_IN);
         } else {
-            Log.d("status", "unretweeted");
-            ivRetweet.setColorFilter(Color.parseColor("#555555"), PorterDuff.Mode.SRC_IN);
+            ivRetweet.setColorFilter(ContextCompat.getColor(context, R.color.icon_gray), PorterDuff.Mode.SRC_IN);
 
         }
     }
@@ -172,23 +168,18 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivReply:
-                Log.d("clicked", "reply");
-                Intent i = new Intent(context, ComposeActivity.class);
-                i.putExtra("replyTweet", tweet);
-//                ivReply.setColorFilter(ContextCompat.getColor(context, Color.rgb(29,161,242)));
-                context.startActivity(i); // brings up the second activity
+                ModalFragment modalFragment = ModalFragment.newInstance(tweet.uid, "@" + tweet.user.screenName + " ");
+                modalFragment.openComposeModal(context);
                 break;
 
             case R.id.ivRetweet:
                 if (!tweet.retweeted) {
-                    Log.d("clicked", "retweet");
                     client.retweet(tweet.uid, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                        Toast.makeText(context, "retweeted", Toast.LENGTH_LONG).show();
-                            ivRetweet.setColorFilter(Color.parseColor("#23af2c"), PorterDuff.Mode.SRC_IN);
+                            Toast.makeText(context, "retweeted", Toast.LENGTH_LONG).show();
+                            ivRetweet.setColorFilter(ContextCompat.getColor(context, R.color.icon_green), PorterDuff.Mode.SRC_IN);
                             tweet.retweeted = true;
-                            Log.d("retweet", "success");
 
                         }
 
@@ -217,14 +208,12 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
                         }
                     });
                 } else {
-                    Log.d("clicked", "retweet");
                     client.unretweet(tweet.uid, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                        Toast.makeText(context, "retweeted", Toast.LENGTH_LONG).show();
-                            ivRetweet.setColorFilter(Color.parseColor("#555555"), PorterDuff.Mode.SRC_IN);
+                            Toast.makeText(context, "unretweeted", Toast.LENGTH_LONG).show();
+                            ivRetweet.setColorFilter(ContextCompat.getColor(context, R.color.icon_gray), PorterDuff.Mode.SRC_IN);
                             tweet.retweeted = false;
-                            Log.d("unretweet", "success");
 
                         }
 
@@ -260,10 +249,9 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
                     client.favorite(tweet.uid, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                        Toast.makeText(context, "favorited", Toast.LENGTH_LONG).show();
-                            ivFavorite.setColorFilter(Color.parseColor("#dd0f5a"), PorterDuff.Mode.SRC_IN);
+                        Toast.makeText(context, "favorited", Toast.LENGTH_LONG).show();
+                            ivFavorite.setColorFilter(ContextCompat.getColor(context, R.color.icon_pink), PorterDuff.Mode.SRC_IN);
                             tweet.favorited = true;
-                            Log.d("favorite", "success");
 
                         }
 
@@ -295,10 +283,9 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
                     client.unfavorite(tweet.uid, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                        Toast.makeText(context, "favorited", Toast.LENGTH_LONG).show();
-                            ivFavorite.setColorFilter(Color.parseColor("#555555"), PorterDuff.Mode.SRC_IN);
+                        Toast.makeText(context, "unfavorited", Toast.LENGTH_LONG).show();
+                            ivFavorite.setColorFilter(ContextCompat.getColor(context, R.color.icon_gray), PorterDuff.Mode.SRC_IN);
                             tweet.favorited = false;
-                            Log.d("unfavorite", "success");
 
                         }
 
