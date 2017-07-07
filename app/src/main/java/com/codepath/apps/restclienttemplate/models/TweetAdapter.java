@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -86,6 +87,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvBody.setText(tweet.body);
         holder.tvScreenName.setText("@" + tweet.user.screenName);
         holder.tvTimestamp.setText(getRelativeTimeAgo(tweet.createdAt));
+
+        // convert "_ minutes ago" to "_m", etc
+        String timestamp = (String) holder.tvTimestamp.getText();
+        String[] splitTime = timestamp.trim().split("\\s+");
+        List<String> times = Arrays.asList("years", "year", "months", "month");
+        if (!times.contains(splitTime[1])) {
+            timestamp = splitTime[0] + splitTime[1].charAt(0);
+        }
+        holder.tvTimestamp.setText(timestamp);
+
 
         // check retweet and favorite status
         if (tweet.favorited) {
