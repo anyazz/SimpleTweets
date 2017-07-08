@@ -17,6 +17,7 @@ import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -34,13 +35,29 @@ public class ModalFragment extends Fragment {
     TwitterClient client;
     Context context;
     private OnItemSelectedListener listener;
+    public String userScreenName;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        openComposeModal(getContext());
+        client = TwitterApp.getRestClient();
+        client.getProfileInfo(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // deserialize the User obj
+                User user = null;
+                try {
+                    user = User.fromJSON(response);
+                    userScreenName = user.screenName;
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                openComposeModal(getContext());
+            }
+        });
 
     }
 
@@ -55,7 +72,7 @@ public class ModalFragment extends Fragment {
 
     public interface OnItemSelectedListener {
         // This can be any number of events to be sent to the activity
-        public void updateTimeline(Tweet tweet);
+        void updateTimeline(Tweet tweet, boolean updateMentions);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
@@ -76,7 +93,7 @@ public class ModalFragment extends Fragment {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         final long reply_id = getArguments().getLong("reply_id", -1);
-        String tag = getArguments().getString("tag", "");
+        final String tag = getArguments().getString("tag", "");
 
         boolean wrapInScrollView = false;
 
@@ -93,7 +110,6 @@ public class ModalFragment extends Fragment {
         etTweetBody.setSelection(tag.length());
         final TextView tvCharCount = (TextView) activity_compose.findViewById(R.id.tvCharCount);
         tvCharCount.setText(String.valueOf(MAX_TWEET_LENGTH - tag.length()));
-
 
         // build modal
         new MaterialDialog.Builder(context)
@@ -114,7 +130,7 @@ public class ModalFragment extends Fragment {
                                 try {
                                     Tweet tweet = Tweet.fromJSON(response);
                                     if (listener != null) {
-                                        listener.updateTimeline(tweet);
+                                        listener.updateTimeline(tweet, tag.substring(1, tag.length()).equals(userScreenName));
                                     }
                                     else {
                                         Log.d("listener", "couldn't update");

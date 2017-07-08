@@ -23,6 +23,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 public class ProfileActivity extends AppCompatActivity {
 
     TwitterClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,15 +65,17 @@ public class ProfileActivity extends AppCompatActivity {
                     User user = null;
                     try {
                         user = User.fromJSON(response);
+                        // set title of action bar based on user info
+                        getSupportActionBar().setTitle(user.screenName);
+
+                        // populate user headline
+                        populateUserHeadline(user);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    // set title of action bar based on user info
-                    getSupportActionBar().setTitle(user.screenName);
 
-                    // populate user headline
-                    populateUserHeadline(user);
                 }
             });
         }
@@ -85,15 +88,16 @@ public class ProfileActivity extends AppCompatActivity {
                     User user = null;
                     try {
                         user = User.fromJSON(response);
+                        // set title of action bar based on user info
+                        getSupportActionBar().setTitle(user.screenName);
+
+                        // populate user headline
+                        populateUserHeadline(user);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    // set title of action bar based on user info
-                    getSupportActionBar().setTitle(user.screenName);
 
-                    // populate user headline
-                    populateUserHeadline(user);
                 }
             });
         }

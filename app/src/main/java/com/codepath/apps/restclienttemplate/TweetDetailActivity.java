@@ -21,6 +21,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
@@ -121,7 +127,7 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
             tvTweetBody.setText(tweet.body);
             tvUsername.setText(tweet.user.name);
             tvScreenName.setText(tweet.user.screenName);
-            tvTimeStamp.setText(tweet.createdAt);
+            tvTimeStamp.setText(formatTime(tweet.createdAt));
 
             Glide.with(context)
                     .load(tweet.user.profileImageUrl)
@@ -161,7 +167,18 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-
+    public String formatTime(String twitterTime) {
+        DateFormat originalFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy");
+        DateFormat targetFormat = new SimpleDateFormat("h:mm a \u2022 dd MMM yy", Locale.ENGLISH);
+        Date date = null;
+        try {
+            date = originalFormat.parse(twitterTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String formattedDate = targetFormat.format(date);  // 20120821
+        return formattedDate;
+    }
 
     // IMPLEMENT ICON CLICK LISTENERS
     @Override
@@ -169,7 +186,7 @@ public class TweetDetailActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.ivReply:
                 ModalFragment modalFragment = ModalFragment.newInstance(tweet.uid, "@" + tweet.user.screenName + " ");
-                modalFragment.onAttach(context);
+//                modalFragment.onAttach(context);
                 modalFragment.openComposeModal(context);
                 break;
 

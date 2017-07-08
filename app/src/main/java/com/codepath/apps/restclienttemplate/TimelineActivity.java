@@ -86,8 +86,11 @@ public class TimelineActivity extends AppCompatActivity implements ModalFragment
     }
 
 
-    public void updateTimeline(Tweet tweet) {
+    public void updateTimeline(Tweet tweet, boolean updateMentions) {
         tpAdapter.timelineFragment.addTweet(tweet);
+        if (updateMentions) {
+            tpAdapter.mentionsFragment.addTweet(tweet);
+        }
     }
 
 
