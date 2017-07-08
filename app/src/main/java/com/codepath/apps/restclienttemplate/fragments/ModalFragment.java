@@ -67,6 +67,7 @@ public class ModalFragment extends Fragment {
         args.putLong("reply_id", reply_id);
         args.putString("tag", tag);
         fragmentModal.setArguments(args);
+
         return fragmentModal;
     }
 
@@ -85,6 +86,7 @@ public class ModalFragment extends Fragment {
             throw new ClassCastException(context.toString()
                     + " must implement ModalFragment.OnItemSelectedListener");
         }
+
     }
 
     public void openComposeModal(Context context) {
@@ -130,7 +132,9 @@ public class ModalFragment extends Fragment {
                                 try {
                                     Tweet tweet = Tweet.fromJSON(response);
                                     if (listener != null) {
-                                        listener.updateTimeline(tweet, tag.substring(1, tag.length()).equals(userScreenName));
+//                                        Log.d("tag", userScreenName);
+//                                        Log.d("tag", String.valueOf(tag.equals("@" + userScreenName)));
+                                        listener.updateTimeline(tweet, tag.equals("@" + userScreenName));
                                     }
                                     else {
                                         Log.d("listener", "couldn't update");
